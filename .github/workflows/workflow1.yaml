@@ -11,6 +11,6 @@ jobs:
       #   with:
       #     node-version: "20"
       - name: Install dependencies
-        run: echo "installing"
-      - name: Build code
-        run: echo "building"
+        run: npm install
+      - name: Build image
+        run: docker image build -t 9574872248/watchlist .
