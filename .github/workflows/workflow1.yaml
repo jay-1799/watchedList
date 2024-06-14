@@ -1,16 +1,32 @@
 name: workflow1
+
 on: push
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Get code
+      - name: Checkout code
         uses: actions/checkout@v3
-      # - name: Set up Node.js 20
-      #   uses: actions/setup-node@v3
-      #   with:
-      #     node-version: "20"
+
+      - name: Set up Node.js 20
+        uses: actions/setup-node@v3
+        with:
+          node-version: "20"
+
       - name: Install dependencies
         run: npm install
-      - name: Build image
-        run: docker image build -t 9574872248/watchlist .
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: 9574872248/watchlist:latest
